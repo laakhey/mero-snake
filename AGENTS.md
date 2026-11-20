@@ -31,4 +31,8 @@ yarn verify                 # typecheck + lint + tests: run before declaring any
 - **Sound and haptics never throw into the game.** Wrap new calls the way `sound.ts` and `haptics.ts` do.
 - **Icon-only controls need an `accessibilityLabel`** and touch targets of at least 48pt.
 - Assets are generated, not hand-edited: `python3 tools/make-sounds.py` for `assets/sounds/`; `tools/icon.svg` → PNGs with ImageMagick (`magick -background none -density 600 tools/icon.svg -resize 1024x1024 assets/images/icon.png`, then derive favicon, splash and the Android foreground). ImageMagick's SVG renderer ignores gradients and `H`/`V` path commands, so keep the source to flat shapes.
+- **Publish updates to `preview` first**; only publish to `production` when the user asks. Production updates reach every installed release build.
+- **Native changes need a new build and a `version` bump** (runtime policy is `appVersion`). An update can't add native modules to existing builds.
+- **Keep expo-audio's plugin options** (`microphonePermission: false`, `recordAudioAndroid: false`, `enableBackgroundPlayback: false`): the game only plays effects in the foreground. The defaults add microphone and background-audio permissions that store review would question.
+- **Remove any `android.permissions` list the EAS CLI writes into `app.json`.** It copies plugin defaults there, which would override the options above.
 - Update `README.md` and this file when a major feature or rule changes.

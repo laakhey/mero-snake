@@ -25,6 +25,17 @@ yarn web        # play in the browser
 yarn verify     # typecheck + lint + tests
 ```
 
+## Publishing (EAS)
+
+The project is `@laakhey/mero-snake` on EAS. Build profiles in `eas.json` map to update channels of the same name (`preview`, `production`).
+
+```bash
+npx eas-cli@latest build --profile preview --platform android   # installable APK
+npx eas-cli@latest update --channel preview --environment preview --message "..."  # ship JS/asset changes
+```
+
+Updates only reach builds with the same runtime version (`appVersion` policy, so bump `version` in `app.json` when native code changes). Release builds pick up a new update within two cold launches.
+
 ## Project layout
 
 | Path | What lives there |
