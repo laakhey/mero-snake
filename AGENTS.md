@@ -27,6 +27,7 @@ yarn verify                 # typecheck + lint + tests: run before declaring any
 - **Gestures use `PanResponder`** (as in Mero Paisa), not a native gesture library, so they work in Expo Go, builds and web.
 - **Animated values come from `useState(() => new Animated.Value(..))`, not `useRef(..).current`.** The React-compiler lint rules reject reading refs during render.
 - **Don't use `useKeepAwake`**: on web it throws if released before the lock is granted. Use the guarded `KeepAwake` component in `play.tsx`.
+- **Leave Play with `goHome()`, not bare `router.back()`**: Play can be the first screen in history (reload or deep link), where `back()` does nothing.
 - **Sound and haptics never throw into the game.** Wrap new calls the way `sound.ts` and `haptics.ts` do.
 - **Icon-only controls need an `accessibilityLabel`** and touch targets of at least 48pt.
 - Assets are generated, not hand-edited: `python3 tools/make-sounds.py` for `assets/sounds/`; `tools/icon.svg` → PNGs with ImageMagick (`magick -background none -density 600 tools/icon.svg -resize 1024x1024 assets/images/icon.png`, then derive favicon, splash and the Android foreground). ImageMagick's SVG renderer ignores gradients and `H`/`V` path commands, so keep the source to flat shapes.

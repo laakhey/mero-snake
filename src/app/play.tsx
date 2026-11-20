@@ -24,6 +24,15 @@ const KEYS: Record<string, Dir> = {
 };
 
 /**
+ * Back to the menu. `router.back()` alone does nothing when Play is the first
+ * screen in history (a reload or deep link to /play), so fall back to replacing it.
+ */
+function goHome() {
+  if (router.canGoBack()) router.back();
+  else router.replace('/');
+}
+
+/**
  * Keeps the screen on while mounted. Not `useKeepAwake`: on web the lock is
  * granted asynchronously and releasing it before then throws, which happens
  * whenever a game ends within a moment of starting.
@@ -246,7 +255,7 @@ export default function Play() {
           <View style={styles.actions}>
             <Button title="Resume" icon="play" size="lg" onPress={resume} />
             <Button title="Restart" icon="replay" variant="secondary" onPress={restart} />
-            <Button title="Quit to menu" icon="home" variant="ghost" onPress={() => router.back()} />
+            <Button title="Quit to menu" icon="home" variant="ghost" onPress={goHome} />
           </View>
         </Overlay>
       ) : null}
@@ -261,7 +270,7 @@ export default function Play() {
           food={state.foodEaten}
           seconds={game.elapsedMs() / 1000}
           onAgain={restart}
-          onHome={() => router.back()}
+          onHome={goHome}
         />
       ) : null}
     </View>
